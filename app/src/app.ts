@@ -1,32 +1,30 @@
 import express from "express";
+import authRoutes from "./routes/index.route";
 import morgan from "morgan";
+import dotenv from 'dotenv';
 import cors from "cors";
 import passport from "passport"
 import passportMidd from "./middlewares/passport";
-import authRoutes from "./routes/index.route"
+import path from "path";
 
-
+//setting
 const app = express();
+dotenv.config();
 app.set("port", process.env.PORT || 3000);
+app.set('trust proxy', true);
 
 //middlewares
 app.use(morgan("dev"));
-//app.use(express.urlencoded({extended: false}));
 app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 app.use(cors());
 app.use(passport.initialize());
 passport.use(passportMidd);
 
-
-//test
-app.get("/", async (req, resp) => {
-    //const result = await db.querySelect("SELECT * FROM seg_roles");
-    //resp.send("Server http ON!");
-    //resp.status(201).json(result)
-
-});
-
-app.use(authRoutes)
-
 app.listen(app.get("port"));
 console.log("Server express on port:", app.get("port"));
+
+app.use('/api/seguridad',authRoutes);
+
+//esta carpeta sera para almacenar los archivos publicos
+app.use('/public', express.static(path.resolve('public')));

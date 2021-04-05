@@ -12,23 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const promise_mysql_1 = __importDefault(require("promise-mysql"));
+const promise_1 = __importDefault(require("mysql2/promise"));
+const keys_1 = require("./keys");
 class database {
     conectarBD() {
         return __awaiter(this, void 0, void 0, function* () {
-            /*    this.cnn.connect((err) => {
-                   if (err) throw err;
-                   console.log("Database is connected!");
-               }); */
-            //await this.cnn.query
-            this.cnn = yield promise_mysql_1.default.createPool({
-                // host: "10.1.1.32",
-                connectionLimit: 1,
-                host: "localhost",
-                user: "root",
-                //password: "4c3r04dm1n",
-                password: "root",
-                database: "intranet"
+            this.cnn = yield promise_1.default.createPool({
+                connectionLimit: keys_1.key.connectionLimit,
+                host: keys_1.key.host,
+                user: keys_1.key.user,
+                password: keys_1.key.password,
+                database: keys_1.key.database
             });
         });
     }
@@ -53,15 +47,16 @@ class database {
             //await this.cnn;
             //this.cnn = null;
             this.desconectarDB();
-            return result;
-        });
-    }
-    inuup() {
-        return __awaiter(this, void 0, void 0, function* () {
-            // const 
+            return result[0];
         });
     }
 }
 const db = new database();
 db.conectarBD();
+console.log(keys_1.key.database);
+console.log(keys_1.key.password);
+console.log(keys_1.key.host);
+console.log(keys_1.key.port);
+console.log(keys_1.key.user);
 exports.default = db;
+//# sourceMappingURL=database.js.map

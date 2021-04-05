@@ -1,38 +1,31 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const index_route_1 = __importDefault(require("./routes/index.route"));
 const morgan_1 = __importDefault(require("morgan"));
+const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const passport_1 = __importDefault(require("passport"));
 const passport_2 = __importDefault(require("./middlewares/passport"));
-const index_route_1 = __importDefault(require("./routes/index.route"));
+const path_1 = __importDefault(require("path"));
+//setting
 const app = express_1.default();
+dotenv_1.default.config();
 app.set("port", process.env.PORT || 3000);
+app.set('trust proxy', true);
 //middlewares
 app.use(morgan_1.default("dev"));
-//app.use(express.urlencoded({extended: false}));
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: false }));
 app.use(cors_1.default());
 app.use(passport_1.default.initialize());
 passport_1.default.use(passport_2.default);
-//test
-app.get("/", (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
-    //const result = await db.querySelect("SELECT * FROM seg_roles");
-    //resp.send("Server http ON!");
-    //resp.status(201).json(result)
-}));
-app.use(index_route_1.default);
 app.listen(app.get("port"));
 console.log("Server express on port:", app.get("port"));
+app.use('/api/seguridad', index_route_1.default);
+//esta carpeta sera para almacenar los archivos publicos
+app.use('/public', express_1.default.static(path_1.default.resolve('public')));
+//# sourceMappingURL=app.js.map

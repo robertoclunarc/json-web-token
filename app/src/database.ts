@@ -1,23 +1,18 @@
-import mysql from "promise-mysql";
+import mysql from "mysql2/promise";
+import {key} from  './keys';
 
 class database {
 
     cnn: any;
 
     async conectarBD() {
-        /*    this.cnn.connect((err) => {
-               if (err) throw err;
-               console.log("Database is connected!");
-           }); */
-        //await this.cnn.query
-        this.cnn = await mysql.createPool({
-            // host: "10.1.1.32",
-            connectionLimit: 1,
-            host: "localhost", //"10.10.0.7",
-            user: "root",
-            //password: "4c3r04dm1n",
-            password: "root", //"4c3r04dm1n",
-            database: "intranet"
+        
+        this.cnn = await mysql.createPool({            
+            connectionLimit: key.connectionLimit,
+            host: key.host,
+            user: key.user,            
+            password: key.password,
+            database: key.database
         });
     }
 
@@ -43,17 +38,16 @@ class database {
         //await this.cnn;
         //this.cnn = null;
         this.desconectarDB();
-        return result;
+        return result[0];
     }
-
-    async inuup() {
-        // const 
-    }
-
-
 }
 
 const db = new database();
 db.conectarBD();
+console.log(key.database);
+console.log(key.password);
+console.log(key.host);
+console.log(key.port);
+console.log(key.user);
 
 export default db;

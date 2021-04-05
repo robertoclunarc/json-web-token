@@ -30,3 +30,4 @@ const strategy = new passport_jwt_1.Strategy({
     }
 }));
 exports.default = strategy;
+//# sourceMappingURL=passport.js.map
