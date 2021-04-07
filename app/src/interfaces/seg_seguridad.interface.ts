@@ -58,3 +58,42 @@ export interface Iseg_log_transac {
     idSegMenu: number;
     idGerencia: number;
 }
+
+export interface Iseg_perfiles {
+    idSegPerfil?: number;
+    codigo: string;
+    nombre: string;
+    descripcion: string;
+    fechaAlta: string;
+    estatus?: number;
+}
+
+export interface Iseg_perfiles_user {
+    idSegPerfilUsuario?: number;
+    idSegUsuario: number;
+    idSegPerfil: number;
+}
+
+export interface Iseg_roles_perfiles {
+    idSegRolPerfil?: number;
+    idSegRol: number;
+    idSegPerfil: number;
+}
+
+export interface Iseg_direcciones {
+    idSegDireccion?: number;
+    tipoResidencia?: string;
+    tipoDireccion?: string;
+    direccion: string;
+    puntoReferencia?: string;
+    idSegUsuario: number;
+    idConfigZonaPostal: number;
+    idConfigParroquia: number;
+}
+
+export interface Iseg_telefonos{
+    idSegTelefono?: number;
+    valor?: string;
+    tipoTelefono?: string;
+    idSegUsuario: number;
+}

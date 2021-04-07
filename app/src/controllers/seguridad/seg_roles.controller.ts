@@ -30,9 +30,9 @@ export const tipoacciones = async (req: Request, resp: Response) => {
     }
 }
 export const rol = async (req: Request, resp: Response) => {
-    const _id= req.params.getidSegRol;
+    const idx= req.params.getidSegRol;
     try {
-        const result = await db.querySelect("SELECT * FROM seg_roles WHERE idSegRol = ?", [_id]);
+        const result = await db.querySelect("SELECT * FROM seg_roles WHERE idSegRol = ?", [idx]);
         if (result.length <= 0) {
             return resp.status(402).json({ msg: "No Data!" });
         }

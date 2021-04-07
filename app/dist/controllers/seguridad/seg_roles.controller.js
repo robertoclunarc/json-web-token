@@ -39,9 +39,9 @@ exports.tipoacciones = (req, resp) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.rol = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
-    const _id = req.params.getidSegRol;
+    const idx = req.params.getidSegRol;
     try {
-        const result = yield database_1.default.querySelect("SELECT * FROM seg_roles WHERE idSegRol = ?", [_id]);
+        const result = yield database_1.default.querySelect("SELECT * FROM seg_roles WHERE idSegRol = ?", [idx]);
         if (result.length <= 0) {
             return resp.status(402).json({ msg: "No Data!" });
         }

@@ -9,6 +9,11 @@ const seg_roles_controller_1 = require("../controllers/seguridad/seg_roles.contr
 const seg_usuario_rol_controller_1 = require("../controllers/seguridad/seg_usuario_rol.controller");
 const seg_correos_1 = require("../controllers/seguridad/seg_correos");
 const seg_log_transac_1 = require("../controllers/seguridad/seg_log_transac");
+const seg_perfiles_1 = require("../controllers/seguridad/seg_perfiles");
+const seg_perfiles_usuarios_1 = require("../controllers/seguridad/seg_perfiles_usuarios");
+const seg_perfil_rol_1 = require("../controllers/seguridad/seg_perfil_rol");
+const seg_direcciones_1 = require("../controllers/seguridad/seg_direcciones");
+const seg_telefonos_1 = require("../controllers/seguridad/seg_telefonos");
 const auth_controller_1 = require("../controllers/auth.controller");
 const passport_1 = __importDefault(require("passport"));
 const multer_1 = __importDefault(require("../lib/multer"));
@@ -55,5 +60,32 @@ router.delete('/usuarios/correos/:getidSegCorreo', auth_controller_1.verifyToken
 router.post('/log', seg_log_transac_1.Insertlog);
 router.get('/log', seg_log_transac_1.selectLog);
 router.get('/getlog', seg_log_transac_1.GetLog);
+//rutas seguridad: perfiles
+router.get('/perfiles', auth_controller_1.verifyToken, seg_perfiles_1.perfiles);
+router.get('/perfiles/:getidSegPerf', auth_controller_1.verifyToken, seg_perfiles_1.perfilesID);
+router.post('/perfiles', auth_controller_1.verifyToken, seg_perfiles_1.createPerfil);
+router.put('/perfiles/:getidSegPerf', auth_controller_1.verifyToken, seg_perfiles_1.updatePerfil);
+router.delete('/perfiles/:getidSegPerf', auth_controller_1.verifyToken, seg_perfiles_1.deletePerfil);
+//rutas seguridad: perfiles de usuarios
+router.get('/perfiles_user', auth_controller_1.verifyToken, seg_perfiles_usuarios_1.perfiles_user);
+router.get('/perfil_usuarios/:getidSegUser', auth_controller_1.verifyToken, seg_perfiles_usuarios_1.perfilesUsuarios);
+router.get('/noperfilesusuario/:getidSegPerfil', auth_controller_1.verifyToken, seg_perfiles_usuarios_1.noperfilesusuario);
+router.get('/porperfil/:getidSegPerfil', auth_controller_1.verifyToken, seg_perfiles_usuarios_1.porperfil);
+router.delete('/perfilusuario/:getidSegPerfil/:idSegUsuario', auth_controller_1.verifyToken, seg_perfiles_usuarios_1.delperfilusuario);
+//rutas seguridad: roles de perfil
+router.get('/perfilroles/:getidSegPerfil', auth_controller_1.verifyToken, seg_perfil_rol_1.perfilroles);
+router.get('/noperfilroles/:getidSegPerfil', auth_controller_1.verifyToken, seg_perfil_rol_1.noperfilroles);
+router.post('/perfilrol', auth_controller_1.verifyToken, seg_perfil_rol_1.perfilrol);
+router.delete('/perfilrol/:getidSegPerfil/:getidSegRol', auth_controller_1.verifyToken, seg_perfil_rol_1.delperfilrol);
+//rutas seguridad: direcciones
+router.post('/usuarios/direcciones', auth_controller_1.verifyToken, seg_direcciones_1.createDireccion);
+router.put('/usuarios/direcciones/:getid', auth_controller_1.verifyToken, seg_direcciones_1.updateDireccion);
+router.delete('/usuarios/direcciones/todos/:getidUsuario', auth_controller_1.verifyToken, seg_direcciones_1.deleteDireccionesTodo);
+router.delete('/usuarios/direcciones/:getiddireccion', auth_controller_1.verifyToken, seg_direcciones_1.deleteDireccion);
+//rutas seguridad: telefonos
+router.post('/usuarios/telefonos', auth_controller_1.verifyToken, seg_telefonos_1.createTelefono);
+router.put('/usuarios/telefonos/:getid', auth_controller_1.verifyToken, seg_telefonos_1.updateTelefono);
+router.delete('/usuarios/telefonos/todos/:getidUsuario', auth_controller_1.verifyToken, seg_telefonos_1.deletetelefonosTodo);
+router.delete('/usuarios/telefonos/:getiddireccion', auth_controller_1.verifyToken, seg_telefonos_1.deleteTelefonos);
 exports.default = router;
 //# sourceMappingURL=index.route.js.map
