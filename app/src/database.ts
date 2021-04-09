@@ -44,10 +44,5 @@ class database {
 
 const db = new database();
 db.conectarBD();
-console.log(key.database);
-console.log(key.password);
-console.log(key.host);
-console.log(key.port);
-console.log(key.user);
 
 export default db;

@@ -9,6 +9,7 @@ import { perfiles_user, perfilesUsuarios, noperfilesusuario, porperfil, delperfi
 import { perfilroles, noperfilroles, perfilrol, delperfilrol } from '../controllers/seguridad/seg_perfil_rol';
 import { createDireccion, updateDireccion, deleteDireccionesTodo, deleteDireccion } from '../controllers/seguridad/seg_direcciones';
 import { createTelefono, updateTelefono, deletetelefonosTodo, deleteTelefonos } from '../controllers/seguridad/seg_telefonos';
+import { menus, items, icons, menusID, menusitems, obtenerMenuUsuario } from '../controllers/seguridad/seg_menus';
 
 import { getJWT, verifyToken } from "../controllers/auth.controller";
 import passport from "passport";
@@ -85,5 +86,12 @@ router.post('/usuarios/telefonos', verifyToken, createTelefono);
 router.put('/usuarios/telefonos/:getid', verifyToken, updateTelefono);
 router.delete('/usuarios/telefonos/todos/:getidUsuario', verifyToken, deletetelefonosTodo);
 router.delete('/usuarios/telefonos/:getiddireccion', verifyToken, deleteTelefonos );
+//rutas seguridad: menus
+router.get('/menus/:tablaMenu',menus);
+router.get('/menus/items/:tablaMenu',items);
+router.get('/menus/icons',icons);
+router.get('/menus/:tablaMenu/:getidMenu',menusID);
+router.get('/menus/menusitems',menusitems);
+router.get('/menus/obtenerMenuPorUsuario', obtenerMenuUsuario);
 
 export default router;

@@ -14,6 +14,7 @@ const seg_perfiles_usuarios_1 = require("../controllers/seguridad/seg_perfiles_u
 const seg_perfil_rol_1 = require("../controllers/seguridad/seg_perfil_rol");
 const seg_direcciones_1 = require("../controllers/seguridad/seg_direcciones");
 const seg_telefonos_1 = require("../controllers/seguridad/seg_telefonos");
+const seg_menus_1 = require("../controllers/seguridad/seg_menus");
 const auth_controller_1 = require("../controllers/auth.controller");
 const passport_1 = __importDefault(require("passport"));
 const multer_1 = __importDefault(require("../lib/multer"));
@@ -87,5 +88,12 @@ router.post('/usuarios/telefonos', auth_controller_1.verifyToken, seg_telefonos_
 router.put('/usuarios/telefonos/:getid', auth_controller_1.verifyToken, seg_telefonos_1.updateTelefono);
 router.delete('/usuarios/telefonos/todos/:getidUsuario', auth_controller_1.verifyToken, seg_telefonos_1.deletetelefonosTodo);
 router.delete('/usuarios/telefonos/:getiddireccion', auth_controller_1.verifyToken, seg_telefonos_1.deleteTelefonos);
+//rutas seguridad: menus
+router.get('/menus/:tablaMenu', seg_menus_1.menus);
+router.get('/menus/items/:tablaMenu', seg_menus_1.items);
+router.get('/menus/icons', seg_menus_1.icons);
+router.get('/menus/:tablaMenu/:getidMenu', seg_menus_1.menusID);
+router.get('/menus/menusitems', seg_menus_1.menusitems);
+router.get('/menus/obtenerMenuPorUsuario', seg_menus_1.obtenerMenuUsuario);
 exports.default = router;
 //# sourceMappingURL=index.route.js.map

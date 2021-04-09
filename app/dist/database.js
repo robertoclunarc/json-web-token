@@ -53,10 +53,5 @@ class database {
 }
 const db = new database();
 db.conectarBD();
-console.log(keys_1.key.database);
-console.log(keys_1.key.password);
-console.log(keys_1.key.host);
-console.log(keys_1.key.port);
-console.log(keys_1.key.user);
 exports.default = db;
 //# sourceMappingURL=database.js.map

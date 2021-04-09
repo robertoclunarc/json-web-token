@@ -97,3 +97,14 @@ export interface Iseg_telefonos{
     tipoTelefono?: string;
     idSegUsuario: number;
 }
+
+export interface Iseg_menus{
+    idSegMenu?: number;
+    idSegMenuPadre: number;
+    titulo?: string;
+    routeLink?: string;
+    nivel?: number;
+    ordenVisualizacion?: number;
+    expandedIcon?: string;
+    collapsedIcon?: string;
+}
