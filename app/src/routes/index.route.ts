@@ -77,6 +77,7 @@ router.get('/noperfilroles/:getidSegPerfil', verifyToken, noperfilroles);
 router.post('/perfilrol', verifyToken, perfilrol);
 router.delete('/perfilrol/:getidSegPerfil/:getidSegRol', verifyToken, delperfilrol);
 //rutas seguridad: direcciones
+
 router.post('/usuarios/direcciones', verifyToken, createDireccion);
 router.put('/usuarios/direcciones/:getid', verifyToken, updateDireccion);
 router.delete('/usuarios/direcciones/todos/:getidUsuario', verifyToken, deleteDireccionesTodo);
