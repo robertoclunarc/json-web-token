@@ -169,7 +169,7 @@ exports.login = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
             //token
             req.idapp = rset.idSegUsuario;
             let token = yield auth_controller_1.getJWT(req, resp);
-            return resp.header('auth-token', token).json(rset);
+            resp.header('auth-token', token).json(rset);
         }
     }
     catch (error) {

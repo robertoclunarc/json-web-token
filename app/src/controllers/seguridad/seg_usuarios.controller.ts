@@ -4,8 +4,8 @@ import { Iseg_usuarios } from "../../interfaces/seg_seguridad.interface";
 import { encryptPassword, validatePassword } from "../../middlewares/password";
 import  { getJWT } from "../auth.controller";
 
-export const usuarios = async (req: Request, resp: Response) => {
 
+export const usuarios = async (req: Request, resp: Response) => {
     try {
         const result = await db.querySelect("SELECT * FROM seg_usuarios");
         if (result.length <= 0) {
@@ -165,7 +165,7 @@ export const login = async (req: Request, resp: Response) => {
             req.idapp = rset.idSegUsuario;
             let token: string = await getJWT(req, resp) as string; 
             
-            return resp.header('auth-token', token).json(rset);            
+            resp.header('auth-token', token).json(rset);            
         }
 
     } catch(error) {
