@@ -7,6 +7,7 @@ import passport from "passport"
 import passportMidd from "./middlewares/passport";
 import path from "path";
 
+
 //setting
 const app = express();
 dotenv.config();

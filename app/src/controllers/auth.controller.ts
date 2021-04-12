@@ -1,7 +1,7 @@
-import { Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction, json } from "express";
 import db from "../database";
 import jwt from "jsonwebtoken";
-import { IPayload} from '../interfaces/seg_seguridad.interface'
+import { IPayload} from '../interfaces/seg_seguridad.interface';
 
 function createJWT(idApp: number) {
     return jwt.sign({ _id: idApp }, process.env.JWT_SECRET || "secret", {
@@ -33,10 +33,35 @@ export const getJWT = async (req: Request, resp: Response) => {
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     const token = req.header('auth-token');
-    if (!token) return res.status(401).json('Acceso Denegado');
+    if (!token) return res.status(401).json('Es necesario el token de autenticación');
     const payload = jwt.verify(token, process.env.JWT_SECRET || "secret") as IPayload ;
     
-    req.userId = payload._id;
+   /* 
+   console.log(payload);
+    console.log(req.idapp);
+    console.log(req.userId);
+    */
+    
+    if (ValidateUSer(payload._id)){
+        req.userId = payload._id;
+        next();
+    }else{
+        res.status(401).json('Token inválido');
+    }
+}
 
-    next();
+export async function ValidateUSer(IDuser: string) {
+    
+    const query: string = "SELECT * FROM seg_usuarios WHERE idSegUsuario =?";
+    try {
+        const result = await db.querySelect(query, [IDuser]);
+        if (result.length <= 0) {
+            return false;
+        }
+
+        return true;
+
+    } catch (error) {
+        console.log(error);
+    }
 }

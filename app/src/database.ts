@@ -37,7 +37,7 @@ class database {
         }
         //await this.cnn;
         //this.cnn = null;
-        this.desconectarDB();
+        //this.desconectarDB();
         return result[0];
     }
 }

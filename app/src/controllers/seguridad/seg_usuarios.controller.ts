@@ -4,8 +4,8 @@ import { Iseg_usuarios } from "../../interfaces/seg_seguridad.interface";
 import { encryptPassword, validatePassword } from "../../middlewares/password";
 import  { getJWT } from "../auth.controller";
 
-
 export const usuarios = async (req: Request, resp: Response) => {
+
     try {
         const result = await db.querySelect("SELECT * FROM seg_usuarios");
         if (result.length <= 0) {
@@ -132,8 +132,9 @@ export const createUser = async (req: Request, resp: Response) => {
     try {
         const result = await db.querySelect("INSERT INTO seg_usuarios SET ?", [newPost]);    
         newPost.idSegUsuario = result.insertId;
-        req.idapp = newPost.idSegUsuario;
-        //token             
+        
+        //token 
+        req.idapp = newPost.idSegUsuario;          
         let token: string = await getJWT(req, resp) as string; 
         
         resp.header('auth-token', token).json(newPost.idSegUsuario);
@@ -144,9 +145,10 @@ export const createUser = async (req: Request, resp: Response) => {
     }
 };
 
+
 export const login = async (req: Request, resp: Response) => {
-    let usuario: string = req.body.user;
-    let contrasenia: string = req.body.password;      
+    let usuario: string = req.body.usuario;
+    let contrasenia: string = req.body.contrasenia;      
     
     try {
         const result = await db.querySelect("SELECT u.*,(SELECT cargos.idConfigGerencia FROM config_cargos cargos WHERE cargos.idConfigCargo = u.idConfigCargo) idGerencia  FROM seg_usuarios as u WHERE  u.usuario=?", [usuario]);    
@@ -158,11 +160,12 @@ export const login = async (req: Request, resp: Response) => {
             const rset: Iseg_usuarios = result[0];            
             const correctPassword: boolean = await validatePassword(contrasenia, rset.contrasenia);                     
             if (!correctPassword) return resp.status(400).json('Clave Incorrecta');
+            
+            //token
             req.idapp = rset.idSegUsuario;
-            //token             
             let token: string = await getJWT(req, resp) as string; 
             
-            resp.header('auth-token', token).json(rset);            
+            return resp.header('auth-token', token).json(rset);            
         }
 
     } catch(error) {
@@ -174,7 +177,7 @@ export const login = async (req: Request, resp: Response) => {
 export const updateUsuario = async (req: Request, resp: Response) => {
     let idSegUsuario = req.params.getidSegUsuario;
     let update: Iseg_usuarios = req.body;
-
+    update.contrasenia= await encryptPassword(update.contrasenia);
     let consulta = ("UPDATE seg_usuarios SET ? WHERE idSegUsuario = ?");
     try {
         const result = await db.querySelect(consulta, [update, idSegUsuario]);

@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router, Request } from "express";
 import { usuarios, usuariosgerencia, ip, idSegUsuario, direcciones, telefonos, correos, createUser, login, updateUsuario, deleteUsuario, usuariosverificagerencia, subirimagenusr } from "../controllers/seguridad/seg_usuarios.controller";
 import { roles, tipoacciones, rol, createRol, updateRol, deleteRol, userLocalStorage } from "../controllers/seguridad/seg_roles.controller";
 import { createUsuarioRol, deleteusuariorol, usuarioroles, usuarios_por_roles, nousuarioroles } from "../controllers/seguridad/seg_usuario_rol.controller";
@@ -18,13 +18,16 @@ import multer from "../lib/multer";
 //
 
 const router:Router = Router();
+
 //Rutas:
-//rutas pruebas
+//rutas pruebas: chritian mejias
+/*
 router.post("/api/seg_usuarios", getJWT);
-router.get("/api/verify", passport.authenticate("jwt", { session: false }), verifyToken);
+//router.get("/api/verify", passport.authenticate("jwt", { session: false }), verifyToken);
+*/
 //rutas seguridad: usuarios
-router.get("/usuarios", usuarios);
-router.get("/usuariosgerencia", usuariosgerencia);
+router.get("/usuarios", verifyToken, usuarios);
+router.get("/usuariosgerencia", verifyToken, usuariosgerencia);
 router.get('/ip', ip);
 router.get('/obt_idSegUsuario/:getidSegUsuario', verifyToken, idSegUsuario);
 router.get('/direcciones/:getid', verifyToken,  direcciones);
@@ -32,7 +35,7 @@ router.get('/telefonos/:getid', verifyToken, telefonos);
 router.get('/correos/:getid', verifyToken, correos);
 router.post('/usuarios', createUser);
 router.post('/login', login);
-router.put('/updateUser/:getidSegUsuario', verifyToken, updateUsuario);
+router.put('/updateUser/:getidSegUsuario', updateUsuario);
 router.delete('/deleteUser/:getidSegUsuario', verifyToken, deleteUsuario);
 router.get('/usuariosverificagerencia/:idConfigGerencia', verifyToken, usuariosverificagerencia);
 router.post('/subirimagenusr', multer.single('image'), subirimagenusr);
