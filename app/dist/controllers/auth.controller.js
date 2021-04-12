@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ValidateUSer = exports.verifyToken = exports.getJWT = void 0;
+exports.verifyToken = exports.getJWT = void 0;
 const database_1 = __importDefault(require("../database"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 function createJWT(idApp) {
@@ -43,16 +43,12 @@ exports.verifyToken = (req, res, next) => {
     if (!token)
         return res.status(401).json('Es necesario el token de autenticación');
     const payload = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || "secret");
-    /*
-    console.log(payload);
-     console.log(req.idapp);
-     console.log(req.userId);
-     */
-    if (ValidateUSer(payload._id)) {
+    try {
+        const payload = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || "secret");
         req.userId = payload._id;
         next();
     }
-    else {
+    catch (error) {
         res.status(401).json('Token inválido');
     }
 };
@@ -71,5 +67,4 @@ function ValidateUSer(IDuser) {
         }
     });
 }
-exports.ValidateUSer = ValidateUSer;
 //# sourceMappingURL=auth.controller.js.map

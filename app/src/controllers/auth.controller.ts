@@ -36,21 +36,16 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
     if (!token) return res.status(401).json('Es necesario el token de autenticación');
     const payload = jwt.verify(token, process.env.JWT_SECRET || "secret") as IPayload ;
     
-   /* 
-   console.log(payload);
-    console.log(req.idapp);
-    console.log(req.userId);
-    */
-    
-    if (ValidateUSer(payload._id)){
+    try {
+        const payload = jwt.verify(token, process.env.JWT_SECRET || "secret") as IPayload ;
         req.userId = payload._id;
         next();
-    }else{
+    } catch(error) {
         res.status(401).json('Token inválido');
     }
 }
 
-export async function ValidateUSer(IDuser: string) {
+async function ValidateUSer(IDuser: string) {
     
     const query: string = "SELECT * FROM seg_usuarios WHERE idSegUsuario =?";
     try {
