@@ -13,7 +13,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verifyToken = exports.getJWT = void 0;
-const database_1 = __importDefault(require("../database"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 function createJWT(idApp) {
     return jsonwebtoken_1.default.sign({ _id: idApp }, process.env.JWT_SECRET || "secret", {
@@ -23,7 +22,7 @@ function createJWT(idApp) {
 exports.getJWT = (req, resp) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (!req.idapp) {
-            return resp.status(402).json({ msg: "Must send id app" });
+            return resp.status(402).json({ msg: "No esta logueado" });
         }
         /*
         const result = await db.querySelect("SELECT * FROM seg_app_auth WHERE id = ?", [req.idapp]);
@@ -49,26 +48,10 @@ exports.verifyToken = (req, res, next) => {
         next();
     }
     catch (error) {
-        res.status(401).json('Token inválido');
         lastError = error;
         if (error.message !== 'invalid signature') {
-            throw lastError;
+            res.status(401).json(lastError);
         }
     }
 };
-function ValidateUSer(IDuser) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const query = "SELECT * FROM seg_usuarios WHERE idSegUsuario =?";
-        try {
-            const result = yield database_1.default.querySelect(query, [IDuser]);
-            if (result.length <= 0) {
-                return false;
-            }
-            return true;
-        }
-        catch (error) {
-            console.log(error);
-        }
-    });
-}
 //# sourceMappingURL=auth.controller.js.map

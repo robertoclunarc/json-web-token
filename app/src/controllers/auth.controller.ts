@@ -14,7 +14,7 @@ export const getJWT = async (req: Request, resp: Response) => {
     try {
         
         if (!req.idapp) {
-            return resp.status(402).json({ msg: "Must send id app" });
+            return resp.status(402).json({ msg: "No esta logueado" });
         }
         /*
         const result = await db.querySelect("SELECT * FROM seg_app_auth WHERE id = ?", [req.idapp]);
@@ -40,26 +40,10 @@ export const verifyToken = (req: Request, res: Response, next: NextFunction) => 
         req.userId = payload._id;
         next();
     } catch(error) {
-        res.status(401).json('Token inválido');
+        
         lastError = error;
         if (error.message !== 'invalid signature') {
-               throw lastError;
+            res.status(401).json(lastError);
         }
-    }
-}
-
-async function ValidateUSer(IDuser: string) {
-    
-    const query: string = "SELECT * FROM seg_usuarios WHERE idSegUsuario =?";
-    try {
-        const result = await db.querySelect(query, [IDuser]);
-        if (result.length <= 0) {
-            return false;
-        }
-
-        return true;
-
-    } catch (error) {
-        console.log(error);
     }
 }
