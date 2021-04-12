@@ -33,15 +33,18 @@ export const getJWT = async (req: Request, resp: Response) => {
 
 export const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     const token = req.header('auth-token');
-    if (!token) return res.status(401).json('Es necesario el token de autenticación');
-    const payload = jwt.verify(token, process.env.JWT_SECRET || "secret") as IPayload ;
-    
+    if (!token) return res.status(401).json('Es necesario el token de autenticación');    
+    let lastError = null;
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET || "secret") as IPayload ;
         req.userId = payload._id;
         next();
     } catch(error) {
         res.status(401).json('Token inválido');
+        lastError = error;
+        if (error.message !== 'invalid signature') {
+               throw lastError;
+        }
     }
 }
 

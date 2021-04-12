@@ -42,7 +42,7 @@ exports.verifyToken = (req, res, next) => {
     const token = req.header('auth-token');
     if (!token)
         return res.status(401).json('Es necesario el token de autenticación');
-    const payload = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || "secret");
+    let lastError = null;
     try {
         const payload = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET || "secret");
         req.userId = payload._id;
@@ -50,6 +50,10 @@ exports.verifyToken = (req, res, next) => {
     }
     catch (error) {
         res.status(401).json('Token inválido');
+        lastError = error;
+        if (error.message !== 'invalid signature') {
+            throw lastError;
+        }
     }
 };
 function ValidateUSer(IDuser) {
