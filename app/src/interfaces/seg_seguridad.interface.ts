@@ -108,3 +108,16 @@ export interface Iseg_menus{
     expandedIcon?: string;
     collapsedIcon?: string;
 }
+
+export interface Imenus_aux{
+    idSegMenu?: number;
+    idSegMenuPadre: number;
+    titulo?: string;
+    label?: string;
+    routeLink?: string;
+    nivel?: number;
+    ordenVisualizacion?: number;
+    expandedIcon?: string;
+    collapsedIcon?: string;
+    children?: string;
+}

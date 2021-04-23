@@ -24,3 +24,21 @@ Modulo que da permisos a travez de un JWT acceso a los API segun si el microserv
       4. direcciones
       5. Telefonos
       6. correos
+
+## Variables de entorno:
+- PORT
+- JWT_SECRET
+- MYSQL_SERVER
+- MYSQL_USER
+- MYSQL_PW
+- MYSQL_DB
+- MYSQL_PORT
+
+## Muestra la data de la tabla seg_user
+get "api/seguridad/usuarios"
+
+## Muestra la data de la tabla seg_perfil
+get "api/seguridad/perfiles"
+
+## Muestra la data de la tabla seg_rol
+get "api/seguridad/roles"
