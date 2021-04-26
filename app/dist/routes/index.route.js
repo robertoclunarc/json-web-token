@@ -26,7 +26,7 @@ router.post("/api/seg_usuarios", getJWT);
 //router.get("/api/verify", passport.authenticate("jwt", { session: false }), verifyToken);
 */
 //rutas seguridad: usuarios
-router.get("/usuarios", auth_controller_1.verifyToken, seg_usuarios_controller_1.usuarios);
+router.get("/usuarios", seg_usuarios_controller_1.usuarios);
 router.get("/usuariosgerencia", auth_controller_1.verifyToken, seg_usuarios_controller_1.usuariosgerencia);
 router.get('/ip', seg_usuarios_controller_1.ip);
 router.get('/obt_idSegUsuario/:getidSegUsuario', auth_controller_1.verifyToken, seg_usuarios_controller_1.idSegUsuario);

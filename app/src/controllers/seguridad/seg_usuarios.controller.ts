@@ -11,7 +11,7 @@ export const usuarios = async (req: Request, resp: Response) => {
         if (result.length <= 0) {
             return resp.status(402).json({ msg: "No Data!" });
         }
-
+        console.log(result);
         return resp.status(201).json(result);
 
     } catch (error) {
