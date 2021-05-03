@@ -30,7 +30,7 @@ export const updateTelefono = async (req: Request, resp: Response) => {
     }   
 }
 
-export const deletetelefonosTodo = async (req: Request, resp: Response) => {
+export const deleteTelefTodos = async (req: Request, resp: Response) => {
     let idx = req.params.getidUsuario;
 
     let consulta = ("DELETE FROM seg_telefonos WHERE idSegUsuario = ?");

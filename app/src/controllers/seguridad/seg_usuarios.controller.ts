@@ -19,7 +19,7 @@ export const usuarios = async (req: Request, resp: Response) => {
     }
 }
 
-export const usuariosgerencia = async (req: Request, resp: Response) => { 
+export const usuariosGerencia = async (req: Request, resp: Response) => { 
     
    const query: string = "SELECT seg_usuarios.*,  (cargos.idConfigGerencia)  idGerencia, (CONCAT(seg_usuarios.primerNombre, ' ', seg_usuarios.primerApellido)) nombre_completo  FROM seg_usuarios JOIN config_cargos cargos ON cargos.idConfigCargo = seg_usuarios.idConfigCargo WHERE cargos.idConfigGerencia = ?";
     
@@ -62,7 +62,7 @@ export const ip = (req: Request, resp: Response) => {
     return resp.status(201).json(_ip);   
 }
 
-export async function idSegUsuario(req:Request, resp: Response) {
+export async function usuarioCargo(req:Request, resp: Response) {
     const _idSegUsuario = req.params.getidSegUsuario;
     const query: string = "SELECT *, (SELECT cargos.idConfigGerencia FROM config_cargos cargos WHERE cargos.idConfigCargo = seg_usuarios.idConfigCargo) idGerencia FROM seg_usuarios WHERE idSegUsuario = ?";
     try {
@@ -201,7 +201,7 @@ export const deleteUsuario = async (req: Request, resp: Response) => {
     }   
 }
 
-export async function usuariosverificagerencia(req:Request, resp: Response) {
+export async function verificaGerencia(req:Request, resp: Response) {
     const idx = req.params.idConfigGerencia;
     const query: string = "SELECT 	usr.idSegUsuario,    usr.primerNombre,    usr.usuario,    usr.idConfigCargo,    cargos.nombre,    gerencia.idConfigGerencia,    gerencia.nombre,    perfiles.idSegPerfil,    rolper.idSegRol AS roles_perfil,    roles_dir.idSegRol AS roles_directos,    roles.nombre, roles.codigo FROM seg_usuarios AS usr INNER JOIN config_cargos cargos ON cargos.idConfigCargo = usr.idConfigCargo INNER JOIN config_gerencias gerencia ON gerencia.idConfigGerencia = cargos.idConfigGerencia LEFT JOIN seg_perfiles_usuarios perfiles ON usr.idSegUsuario = perfiles.idSegUsuario LEFT JOIN seg_roles_perfiles rolper ON perfiles.idSegPerfil = rolper.idSegPerfil LEFT JOIN seg_roles_usuarios roles_dir ON roles_dir.idSegUsuario = usr.idSegUsuario LEFT JOIN seg_roles roles ON roles.idSegRol = roles_dir.idSegRol OR roles.idSegRol = rolper.idSegRol WHERE gerencia.idConfigGerencia = ? AND roles.codigo = 'ROL-VTS' GROUP BY usr.usuario";
     try {
@@ -218,7 +218,7 @@ export async function usuariosverificagerencia(req:Request, resp: Response) {
     }
 }
 
-export function subirimagenusr(req:Request, resp: Response) {
+export function subirImagen(req:Request, resp: Response) {
     const newPhoto = {
         titulo: req.body.titulo,
         descripcion: req.body.descripcion,

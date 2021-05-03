@@ -2,7 +2,7 @@ import { json, Request, Response } from "express";
 import db from "../../database";
 import { Iseg_perfiles_user } from "../../interfaces/seg_seguridad.interface";
 
-export const perfiles_user = async (req: Request, resp: Response) => {
+export const perfilesUser = async (req: Request, resp: Response) => {
     try {
         const result = await db.querySelect("SELECT * FROM seg_perfiles_usuarios");
         if (result.length <= 0) {
@@ -31,7 +31,7 @@ export const perfilesUsuarios = async (req: Request, resp: Response) => {
     }
 }
 
-export const noperfilesusuario = async (req: Request, resp: Response) => {
+export const noPerfilUsuario = async (req: Request, resp: Response) => {
     const idx= req.params.getidSegPerfil;
     try {
         const result = await db.querySelect("SELECT per.nombre AS nombreper, per.codigo AS codigoper, per.idSegPerfil FROM seg_perfiles per LEFT JOIN (SELECT idSegUsuario, idSegPerfilUsuario, idSegPerfil FROM seg_perfiles_usuarios WHERE idSegUsuario= ?) perusr ON perusr.idSegPerfil = per.idSegPerfil WHERE perusr.idSegPerfilUsuario IS NULL AND per.estatus = 1", [idx]);
@@ -46,7 +46,7 @@ export const noperfilesusuario = async (req: Request, resp: Response) => {
     }
 }
 
-export const porperfil = async (req: Request, resp: Response) => {
+export const porPerfil = async (req: Request, resp: Response) => {
     const idx= req.params.getidSegPerfil;
     try {
         const result = await db.querySelect("SELECT * FROM seg_perfiles_usuarios per WHERE per.idSegPerfil = ?", [idx]);
@@ -61,7 +61,7 @@ export const porperfil = async (req: Request, resp: Response) => {
     }
 }
 
-export const delperfilusuario = async (req: Request, resp: Response) => {
+export const delPerfilUsuario = async (req: Request, resp: Response) => {
     let idSegPerfil = req.params.getidSegPerfil;
     let idSegUsuario = req.params.getidSegUsuario;
     let consulta = ("DELETE FROM seg_perfiles_usuarios WHERE idSegPerfil = ? AND idSegUsuario = ?");

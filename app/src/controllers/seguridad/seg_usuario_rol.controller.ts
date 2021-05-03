@@ -16,7 +16,7 @@ export const createUsuarioRol = async (req: Request, resp: Response) => {
     }
 }
 
-export const deleteusuariorol = async (req: Request, resp: Response) => {
+export const deleteUsuarioRol = async (req: Request, resp: Response) => {
     let idSegUsuario = req.params.getidSegUsuario;
     let idSegRol = req.params.getidSegRol;
 
@@ -30,7 +30,7 @@ export const deleteusuariorol = async (req: Request, resp: Response) => {
     }   
 }
 
-export const usuarioroles = async (req: Request, resp: Response) => {
+export const usuarioRoles = async (req: Request, resp: Response) => {
     let idSegUsuario = req.params.getidSegUsuario;
     let consulta = ("SELECT per.usuario AS nombreUsuario, per.idSegUsuario, rol.nombre AS nombreRol,  rol.codigo AS codigoRol,  rol.idSegRol FROM seg_usuarios per JOIN seg_roles_usuarios perRol ON per.idSegUsuario = perRol.idSegUsuario JOIN seg_roles rol ON rol.idSegRol = perRol.idSegRol WHERE per.idSegUsuario = ?");
     try {
@@ -46,7 +46,7 @@ export const usuarioroles = async (req: Request, resp: Response) => {
     }
 }
 
-export const usuarios_por_roles = async (req: Request, resp: Response) => {
+export const usuariosRoles = async (req: Request, resp: Response) => {
     let codigoRol = req.params.getcodigoRol;
     let consulta = ("SELECT per.usuario AS nombreUsuario, per.idSegUsuario,  rol.nombre AS nombreRol, rol.codigo AS codigoRol,  rol.idSegRol FROM seg_usuarios per JOIN seg_roles_usuarios perRol ON per.idSegUsuario = perRol.idSegUsuario JOIN seg_roles rol ON rol.idSegRol = perRol.idSegRol WHERE rol.codigo = ?");
     try {
@@ -62,7 +62,7 @@ export const usuarios_por_roles = async (req: Request, resp: Response) => {
     }
 }
 
-export const nousuarioroles = async (req: Request, resp: Response) => {
+export const noUsuarioRoles = async (req: Request, resp: Response) => {
     let idSegUsuario = req.params.getidSegUsuario;
     let consulta = ("SELECT rol.nombre AS nombreRol, rol.codigo AS codigoRol, rol.idSegRol FROM seg_roles rol LEFT JOIN (SELECT idSegRol, idSegRolUsuario FROM seg_roles_usuarios WHERE idSegUsuario = ?) perRol ON rol.idSegRol = perRol.idSegRol WHERE perRol.idSegRolUsuario IS NULL AND rol.estatus = 1");
     try {

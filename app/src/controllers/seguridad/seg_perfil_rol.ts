@@ -2,7 +2,7 @@ import { json, Request, Response } from "express";
 import db from "../../database";
 import { Iseg_roles_perfiles } from "../../interfaces/seg_seguridad.interface";
 
-export const perfilroles = async (req: Request, resp: Response) => {
+export const perfilRoles = async (req: Request, resp: Response) => {
     const idperfil= req.params.getidSegPerfil;
     try {
         const result = await db.querySelect("SELECT per.nombre AS nombrePerfil,  per.codigo AS codigoPerfil,  per.idSegPerfil, rol.nombre AS nombreRol,  rol.codigo AS codigoRol, rol.idSegRol FROM seg_perfiles per JOIN seg_roles_perfiles perRol ON per.idSegPerfil = perRol.idSegPerfil JOIN seg_roles rol ON rol.idSegRol = perRol.idSegRol WHERE per.idSegPerfil = ? group by per.nombre, per.codigo, per.idSegPerfil,rol.nombre, rol.codigo,  rol.idSegRol, rol.idSegRol", [idperfil]);
@@ -17,7 +17,7 @@ export const perfilroles = async (req: Request, resp: Response) => {
     }
 }
 
-export const noperfilroles = async (req: Request, resp: Response) => {
+export const noPerfilRoles = async (req: Request, resp: Response) => {
     const idSegPerfil= req.params.getidSegPerfil;
     try {
         const result = await db.querySelect("SELECT rol.nombre AS nombreRol, rol.codigo AS codigoRol, rol.idSegRol FROM seg_roles rol LEFT JOIN (SELECT idSegRol, idSegRolPerfil FROM seg_roles_perfiles WHERE idSegPerfil= ?) perRol ON rol.idSegRol = perRol.idSegRol WHERE perRol.idSegRolPerfil IS NULL AND rol.estatus = 1", [idSegPerfil]);
@@ -32,7 +32,7 @@ export const noperfilroles = async (req: Request, resp: Response) => {
     }
 }
 
-export const perfilrol = async (req: Request, resp: Response) => {
+export const perfilRol = async (req: Request, resp: Response) => {
     let newPost: Iseg_roles_perfiles = req.body;        
     
     try {
@@ -46,7 +46,7 @@ export const perfilrol = async (req: Request, resp: Response) => {
     }
 }
 
-export const delperfilrol = async (req: Request, resp: Response) => {
+export const delPerfilRol = async (req: Request, resp: Response) => {
     let idSegPerfil = req.params.getidSegPerfil;
     let idSegRol = req.params.getidSegRol;
     let consulta = ("DELETE FROM seg_roles_perfiles WHERE idSegPerfil = ? AND idSegRol = ?");

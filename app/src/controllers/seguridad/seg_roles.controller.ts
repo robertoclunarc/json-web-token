@@ -16,7 +16,7 @@ export const roles = async (req: Request, resp: Response) => {
     }
 }
 
-export const tipoacciones = async (req: Request, resp: Response) => {
+export const tipoAcciones = async (req: Request, resp: Response) => {
     try {
         const result = await db.querySelect("SELECT idTipoAccion, fecha_alta, nombre FROM  gen_tipo_acciones ORDER BY nombre ASC");
         if (result.length <= 0) {

@@ -1,110 +1,101 @@
-import express, { Application } from 'express';
-import { Iseg_menus, Imenus_aux } from '../interfaces/seg_seguridad.interface'
-export class Util {
+import { Iseg_menus, Imenus_aux, IArbol, Icrum } from '../interfaces/seg_seguridad.interface'
 
-    //private app: Application;
-    private data: any;
-
-    setData(datos: any){
-        this.data=datos;
-    }
+    let SQLseg_menus: Iseg_menus[];
     
-    generarMenu(tipo: number){
-        let arbol:any;       
-        let dts: Imenus_aux;
-        let padres: Iseg_menus[] = this.obtenerPadres();
+    export const generarMenu = (datosSQL: any, tipo: number)=>{
+        SQLseg_menus = datosSQL;
+        let arbol: IArbol[] = [];
+        let nodo: IArbol= {};
+        let data: Imenus_aux;
+        let padres: Iseg_menus[] = obtenerPadres();
         
         padres.forEach(function(value , index) {
-            dts = { 
-                label: value['titulo'],
-                expandedIcon: '',
-                collapsedIcon: '',
-                routeLink: value['routeLink'],
-                nivel: value['nivel'],
-                idSegMenu: value['idSegMenu'],
-                idSegMenuPadre: value['idSegMenuPadre'],
-                ordenVisualizacion: value['ordenVisualizacion']
-            }
-            
-            if ((value['expandedIcon'] === null) || (typeof value['expandedIcon'] === "undefined") || (value['expandedIcon'] == "")){
-                dts.expandedIcon = 'Sin asignar';
-            }else{
-                dts.expandedIcon = value['expandedIcon'];
-            }
-
-            if ((value['collapsedIcon'] === null) || (typeof value['collapsedIcon'] === "undefined") || (value['collapsedIcon'] == "")){
-                dts.collapsedIcon = 'Sin asignar';
-            }else{
-                dts.collapsedIcon = value['collapsedIcon'];
-            } 
-            /*
-            if ((value['expandedIcon'] === null) || (typeof value['expandedIcon'] === "undefined") || (value['expandedIcon'] == "")){
-                dts['expandedIcon'] = 'Sin asignar';
-            }else{
-                dts['expandedIcon'] = value['expandedIcon'];
-            }
-            if ((value['collapsedIcon'] === null) || (typeof value['collapsedIcon'] === "undefined") || (value['collapsedIcon'] == "")){
-                dts['collapsedIcon'] = 'Sin asignar';
-            }else{
-                dts['collapsedIcon'] = value['collapsedIcon'];
-            }            
-            dts['routeLink'] = value['routeLink'];
-            dts['nivel'] = value['nivel'];
-            dts['idSegMenu'] = value['idSegMenu'];
-            dts['idSegMenuPadre'] = value['idSegMenuPadre'];
-            dts['ordenVisualizacion'] = value['ordenVisualizacion'];
-            */
+            data = value;        
 
             if (tipo==0){
-                arbol['label']=value['titulo'];
-                if ((value['expandedIcon'] === null) || (typeof value['expandedIcon'] === "undefined") || (value['expandedIcon'] == "")){
-                    arbol['expandedIcon'] = 'Sin asignar';
+                if ((value.expandedIcon=== null) || (typeof value.expandedIcon === "undefined") || (value.expandedIcon == "")){
+                    data.expandedIcon = 'Sin asignar';
                 }else{
-                    arbol['expandedIcon'] = value['expandedIcon'];
+                    data.expandedIcon = value.expandedIcon;
                 }
-                if ((value['collapsedIcon'] === null) || (typeof value['collapsedIcon'] === "undefined") || (value['collapsedIcon'] == "")){
-                    arbol['collapsedIcon'] = 'Sin asignar';
+                if ((value.collapsedIcon === null) || (typeof value.collapsedIcon === "undefined") || (value.collapsedIcon == "")){
+                    data.collapsedIcon = 'Sin asignar';
                 }else{
-                    arbol['collapsedIcon'] = value['collapsedIcon'];
-                }            
-                arbol['routeLink'] = value['routeLink'];
-                arbol['nivel'] = value['nivel'];
-                arbol['idSegMenu'] = value['idSegMenu'];
-                arbol['idSegMenuPadre'] = value['idSegMenuPadre'];
-                arbol['ordenVisualizacion'] = value['ordenVisualizacion'];
-                arbol['children']="";
+                    data.collapsedIcon = value.collapsedIcon;
+                }
+                
             }else{
-                arbol['data']=dts;
-               // arbol['children']=  this.generarMenuItems(value['idSegMenu'], tipo);
+                if ((value.expandedIcon=== null) || (typeof value.expandedIcon === "undefined") || (value.expandedIcon == "")){
+                    data.expandedIcon = 'Sin asignar';
+                }else{
+                    data.expandedIcon = 'fa ' + value.expandedIcon;
+                }
+                if ((value.collapsedIcon === null) || (typeof value.collapsedIcon === "undefined") || (value.collapsedIcon == "")){
+                    data.collapsedIcon = 'Sin asignar';
+                }else{
+                    data.collapsedIcon = 'fa ' + value.collapsedIcon;
+                }                
             }
+            nodo.data=data;
+            nodo.children = generarMenuItems(value.idSegMenu, tipo) || [];
+            arbol.push(nodo);
+            nodo={};
         });
         
         return arbol;
     }
 
-    generarMenuItems(item: number, tipo: number){        
-        let dts: Iseg_menus[] = this.data;
-        let hijos: Iseg_menus[]= this.obtenerHijos(item);
-        let data: Imenus_aux[];        
+    const generarMenuItems = (item?: number, tipo?: number) => {        
+        const  hijos: Iseg_menus[]= obtenerHijos(item);
+        let data: Iseg_menus;
+        let NewArbol: IArbol = {}
+        let nodos: IArbol[] = [];        
+        
+        if (hijos.length == 0) {
+            return null;
+        }
 
-        /*hijos.forEach(function(value , index) {
-            data.la
-            data = {
-                label: value.titulo || '',
-
-            }
+        hijos.forEach(function(value , index) {             
+            data = value;            
             
             if (tipo == 0){
-                
+
+                if ((value.expandedIcon === null) || (typeof value.expandedIcon === "undefined") || (value.expandedIcon == "")){
+                    data.expandedIcon = 'Sin asignar';
+                }else{
+                    data.expandedIcon = 'fa ' + value.expandedIcon;
+                }
+    
+                if ((value.collapsedIcon === null) || (typeof value.collapsedIcon === "undefined") || (value.collapsedIcon == "")){
+                    data.collapsedIcon = 'Sin asignar';
+                }else{
+                    data.collapsedIcon = 'fa ' + value['collapsedIcon'];
+                }                
             }
-        });*/
-        
+            else{
+                if ((value.expandedIcon === null) || (typeof value.expandedIcon === "undefined") || (value.expandedIcon == "")){
+                    data.expandedIcon = 'Sin asignar';
+                }else{
+                    data.expandedIcon = value.expandedIcon;
+                }
+    
+                if ((value.collapsedIcon === null) || (typeof value.collapsedIcon === "undefined") || (value.collapsedIcon == "")){
+                    data.collapsedIcon = 'Sin asignar';
+                }else{
+                    data.collapsedIcon = value['collapsedIcon'];
+                }                
+            }
+            NewArbol.data = data;
+            NewArbol.children = <IArbol[]>generarMenuItems(value.idSegMenu, tipo);
+            nodos.push(NewArbol);
+            NewArbol = {};
+        });
+        return nodos;    
     }
 
-    obtenerHijos(padre: number){
-        let hijos: Iseg_menus[]= [];
-        let dts: Iseg_menus[] = this.data;
-        dts.forEach(function(dts , index) {
+    const obtenerHijos = (seg_menus:any, padre?: number)=>{
+        let hijos: Iseg_menus[]= [];        
+        SQLseg_menus.forEach(function(dts , index) {
             if (padre == dts.idSegMenuPadre){
                 hijos.push(dts);
             }
@@ -112,16 +103,36 @@ export class Util {
         return hijos;
     }
 
-    obtenerPadres(){
+    const obtenerPadres = () => {
         let padres: Iseg_menus[]= [];
-        let dts: Iseg_menus[] = this.data;
-
-        dts.forEach(function(dts , index) {
+        SQLseg_menus.forEach(function(dts , index) {
             if (dts.idSegMenuPadre== 0){
-               padres.push(dts);
+                padres.push(dts);
             }
         });
 
         return padres;
     }
-}
+
+   /* export const obtenerBreakCrumb=(elements: any, id: number)=>{
+
+    }
+
+    const recursiveBreakCrumb=(elements: Icrum[], id: number)=>{
+        const node = elements.filter((dato) => dato.idSegMenu == id);
+        if (node.length>0){
+
+        }
+    }
+
+    const obtenerNodo=(elements: Icrum[], id: number)=>{
+        elements.forEach(function(element , index) {
+            if (element.idSegMenuPadre== id){
+                return element;
+            }
+        });
+
+        return null;
+    }
+*/
+

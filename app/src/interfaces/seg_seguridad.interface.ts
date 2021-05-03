@@ -112,12 +112,21 @@ export interface Iseg_menus{
 export interface Imenus_aux{
     idSegMenu?: number;
     idSegMenuPadre: number;
-    titulo?: string;
-    label?: string;
+    label?: string;    
     routeLink?: string;
     nivel?: number;
     ordenVisualizacion?: number;
     expandedIcon?: string;
-    collapsedIcon?: string;
-    children?: string;
+    collapsedIcon?: string;    
+}
+
+export interface IArbol {
+    data?: Iseg_menus;
+    children?: IArbol[];
+}
+
+export interface Icrum{
+    idSegMenu?: number;
+    idSegMenuPadre?: number;
+    label?: string;
 }

@@ -2,7 +2,7 @@ import { json, Request, Response } from "express";
 import db from "../../database";
 import { Iseg_correos } from "../../interfaces/seg_seguridad.interface";
 
-export const Insertcorreos = async (req: Request, resp: Response) => {
+export const insertCorreos = async (req: Request, resp: Response) => {
     let newPost: Iseg_correos = req.body;        
     
     try {

@@ -30,7 +30,7 @@ export const selectLog = async (req: Request, resp: Response) => {
     }
 }
 
-export const GetLog = async (req: Request, resp: Response) => {
+export const getLog = async (req: Request, resp: Response) => {
     let modulo = req.body.modulo;
     let accion = req.body.accion;
     let rol = req.body.rol;
