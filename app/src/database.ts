@@ -14,6 +14,13 @@ class database {
             password: key.password,
             database: key.database
         });
+        //console.log(`Database ${key.database} | user ${key.user} | host ${key.host} |`);
+        try {            
+            let testconection = await this.cnn.query (`use ${key.database};`);
+            console.log(`Database ${key.database} conected!` );
+        } catch (error) {
+            console.log(`ERROR database conection!: ${error} `);
+        }
     }
 
     getC() {
@@ -43,6 +50,5 @@ class database {
 }
 
 const db = new database();
-db.conectarBD();
 
 export default db;

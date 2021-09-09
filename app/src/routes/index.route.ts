@@ -9,11 +9,10 @@ import { perfilesUser, perfilesUsuarios, noPerfilUsuario, porPerfil, delPerfilUs
 import { perfilRoles, noPerfilRoles, perfilRol, delPerfilRol } from '../controllers/seguridad/seg_perfil_rol';
 import { createDireccion, updateDireccion, deleteDireccionesTodo, deleteDireccion } from '../controllers/seguridad/seg_direcciones';
 import { createTelefono, updateTelefono, deleteTelefTodos, deleteTelefonos } from '../controllers/seguridad/seg_telefonos';
-import { menus, items, icons, menusID, menusItems, obtenerMenuUsuario, insertarItemMenu, updateMenu, deleteMenu } from '../controllers/seguridad/seg_menus';
-import { getJWT, verifyToken } from "../controllers/auth.controller";
+import { menus, items, icons, menusID, menusItems, obtenerMenuUsuario, insertarItemMenu, updateMenu, deleteMenu, obtenerBreakCrumb } from '../controllers/seguridad/seg_menus';
+import { getJWT, verifyToken, getAuth } from "../controllers/auth.controller";
 //import passport from "passport";
 import multer from "../lib/multer";
-
 //
 
 const router:Router = Router();
@@ -25,13 +24,13 @@ router.post("/api/seg_usuarios", getJWT);
 //router.get("/api/verify", passport.authenticate("jwt", { session: false }), verifyToken);
 */
 //rutas seguridad: usuarios
-router.get("/usuarios",verifyToken, usuarios);
+router.get("/usuarios", verifyToken, getAuth(18), usuarios);
 router.post('/usuarios', createUser);
 router.get('/usuarios/cargo/:getidSegUsuario', verifyToken, usuarioCargo);
 router.get('/usuarios/direcciones/:getid', verifyToken,  direcciones);
 router.get('/usuarios/telefonos/:getid', verifyToken, telefonos);
 router.get('/usuarios/correos/:getid', verifyToken, correos);
-router.get("/usuarios/gerencia", verifyToken, usuariosGerencia);
+router.get("/usuarios/gerencia/:idConfigGerencia", usuariosGerencia);
 router.post('/usuarios/login', login);
 router.put('/usuarios/update/:getidSegUsuario', updateUsuario);
 router.delete('/usuarios/delete/:getidSegUsuario', verifyToken, deleteUsuario);
@@ -91,13 +90,14 @@ router.post('/perfilroles/perfilrol', verifyToken, perfilRol);
 router.delete('/perfilroles/:getidSegPerfil/:getidSegRol', verifyToken, delPerfilRol);
 //rutas seguridad: menus
 router.get('/menus',menus);
-router.get('/menus/items/:tablaMenu',items);
+router.get('/menus/items',items);
 router.get('/menus/icons',icons);
-router.get('/menus/:tablaMenu/:getidMenu',menusID);
+router.get('/menus/menusID/:getidMenu',menusID);
 router.get('/menus/menusitems',menusItems);
-router.get('/menus/obtenerMenuPorUsuario', obtenerMenuUsuario);
+router.get('/menus/obtenerMenuPorUsuario/:getidUsuario', obtenerMenuUsuario);
 router.post('/menus', insertarItemMenu);
 router.put('/menus/:getidSegMenu', updateMenu);
 router.delete('/menus/:getidSegMenu', deleteMenu);
+router.get('/menus/obtenerBreakCrumb/:getidSegMenu', obtenerBreakCrumb);
 
 export default router;

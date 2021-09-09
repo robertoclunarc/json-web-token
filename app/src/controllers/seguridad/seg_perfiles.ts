@@ -62,7 +62,7 @@ export const updatePerfil = async (req: Request, resp: Response) => {
 export const deletePerfil = async (req: Request, resp: Response) => {
     let idSegPerf = req.params.getidSegPerf;
 
-    let consulta = ("DELETE FROM seg_perfiles WHERE idSegPerfil = ?");
+    let consulta = ("UPDATE seg_perfiles SET estatus=0 WHERE idSegPerfil = ?");
     try {
         const result = await db.querySelect(consulta, [idSegPerf]);
         resp.status(201).json("Perfil eliminado correctamente");

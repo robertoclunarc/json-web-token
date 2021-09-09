@@ -21,6 +21,9 @@ export  interface IPayload{
     _id: string;
     iat: number;
     exp: number;
+    _car?: number;
+    _ger?: number;
+    _rol?: number[];
 }
 
 export interface Iseg_rol {
@@ -87,8 +90,8 @@ export interface Iseg_direcciones {
     direccion: string;
     puntoReferencia?: string;
     idSegUsuario: number;
-    idConfigZonaPostal: number;
-    idConfigParroquia: number;
+    idConfigZonaPostal?: number;
+    idConfigParroquia?: number;
 }
 
 export interface Iseg_telefonos{

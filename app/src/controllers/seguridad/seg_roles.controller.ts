@@ -75,7 +75,7 @@ export const updateRol = async (req: Request, resp: Response) => {
 export const deleteRol = async (req: Request, resp: Response) => {
     let idSegRol = req.params.getidSegRol;
 
-    let consulta = ("DELETE FROM seg_roles WHERE idSegRol = ?");
+    let consulta = ("UPDATE seg_roles SET estatus=0 WHERE idSegRol = ?");
     try {
         const result = await db.querySelect(consulta, [idSegRol]);
         resp.status(201).json("Rol eliminado correctamente");

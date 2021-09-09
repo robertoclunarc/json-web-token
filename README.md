@@ -40,7 +40,7 @@ Modulo que da permisos a travez de un JWT acceso a los API segun si el microserv
 - get "/usuarios/direcciones/:id"
 - get "/usuarios/telefonos/:id"
 - get "/usuarios/correos/:id"
-- get "/usuarios/gerencia"
+- get "/usuarios/gerencia/:idConfigGerencia"
 - get "/usuarios/verificagerencia/:idConfigGerencia"
 - get "/usuarios/ip"
 - post "/usuarios/login"

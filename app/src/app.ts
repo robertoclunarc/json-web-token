@@ -6,11 +6,12 @@ import cors from "cors";
 import passport from "passport"
 import passportMidd from "./middlewares/passport";
 import path from "path";
+import db from "./database";
 
 //setting
 const app = express();
 dotenv.config();
-app.set("port", process.env.PORT || 3000);
+app.set("port", process.env.APP_PORT || 3000);
 app.set('trust proxy', true);
 
 //middlewares
@@ -24,14 +25,16 @@ passport.use(passportMidd);
 app.listen(app.get("port"));
 console.log("Server express on port:", app.get("port"));
 
-app.use('/',authRoutes);
+db.conectarBD();
 
 app.get('/', (req, res) => {
-	const message = `Las APIs se ejecutan en el puerto: ${process.env.PORT}`;
+	const message = `Las APIs se ejecutan en el puerto: ${process.env.APP_PORT}. La base de datos es: ${process.env.MYSQL_DB}, corriendo en el servidor ${process.env.MYSQL_SERVER}, con el usuario ${process.env.MYSQL_USER}`;
 	res.json({
 		message
 	});
 });
+
+app.use('/api',authRoutes);
 
 app.use((req, res, next) => {
 	res.status(404).json({

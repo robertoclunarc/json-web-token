@@ -1,4 +1,4 @@
-import { json, Request, Response } from "express";
+import {  Request, Response } from "express";
 import db from "../../database";
 import { Iseg_usuarios } from "../../interfaces/seg_seguridad.interface";
 import { encryptPassword, validatePassword } from "../../middlewares/password";
@@ -11,7 +11,7 @@ export const usuarios = async (req: Request, resp: Response) => {
         if (result.length <= 0) {
             return resp.status(402).json({ msg: "No Data!" });
         }
-        console.log(result);
+        //console.log(result);
         return resp.status(201).json(result);
 
     } catch (error) {
@@ -24,7 +24,7 @@ export const usuariosGerencia = async (req: Request, resp: Response) => {
    const query: string = "SELECT seg_usuarios.*,  (cargos.idConfigGerencia)  idGerencia, (CONCAT(seg_usuarios.primerNombre, ' ', seg_usuarios.primerApellido)) nombre_completo  FROM seg_usuarios JOIN config_cargos cargos ON cargos.idConfigCargo = seg_usuarios.idConfigCargo WHERE cargos.idConfigGerencia = ?";
     
     try {
-        const result = await db.querySelect(query,[req.body.idGerencia]);
+        const result = await db.querySelect(query,[req.params.idConfigGerencia]);
         
         if (result.length <= 0) {
             return resp.status(402).json({ msg: "No Data!" });
@@ -151,18 +151,22 @@ export const login = async (req: Request, resp: Response) => {
     let contrasenia: string = req.body.contrasenia;      
     
     try {
-        const result = await db.querySelect("SELECT u.*,(SELECT cargos.idConfigGerencia FROM config_cargos cargos WHERE cargos.idConfigCargo = u.idConfigCargo) idGerencia  FROM seg_usuarios as u WHERE  u.usuario=?", [usuario]);    
+        const result = await db.querySelect("SELECT seg_usuarios.idSegUsuario,  CONCAT(seg_usuarios.primerNombre,' ',seg_usuarios.primerApellido) AS nombreApellidoUser,  seg_usuarios.usuario, seg_usuarios.contrasenia, seg_usuarios.estatus,  seg_usuarios.idConfigCargo,  seg_usuarios.rutaImagen,  config_cargos.idConfigGerencia, GROUP_CONCAT(seg_roles_usuarios.idSegRol SEPARATOR '|') as roles  FROM  seg_usuarios   INNER JOIN config_cargos ON seg_usuarios.idConfigCargo = config_cargos.idConfigCargo LEFT JOIN seg_roles_usuarios ON seg_roles_usuarios.idSegUsuario = seg_usuarios.idSegUsuario WHERE seg_usuarios.usuario=? GROUP BY seg_usuarios.idSegUsuario", [usuario]);    
         console.log(result);
         if (!result.length){
             return resp.status(400).json('Usuario No Encontrado');
                    
         }else{
-            const rset: Iseg_usuarios = result[0];            
+            let rset = result[0];            
             const correctPassword: boolean = await validatePassword(contrasenia, rset.contrasenia);                     
             if (!correctPassword) return resp.status(400).json('Clave Incorrecta');
             
             //token
             req.idapp = rset.idSegUsuario;
+            req.gerencia = rset.idConfigGerencia;
+            req.cargo = rset.idConfigCargo;
+            const roles = rset.roles.split('|').map( (n: any) => parseInt(n, 10));            
+            req.rol = roles;
             let token: string = await getJWT(req, resp) as string; 
             
             resp.header('auth-token', token).json(rset);            
@@ -190,8 +194,8 @@ export const updateUsuario = async (req: Request, resp: Response) => {
 
 export const deleteUsuario = async (req: Request, resp: Response) => {
     let idSegUsuario = req.params.getidSegUsuario;
-
-    let consulta = ("DELETE FROM seg_usuarios WHERE idSegUsuario = ?");
+    
+    let consulta = ("UPDATE seg_usuarios SET estatus=0 WHERE idSegUsuario = ?");
     try {
         const result = await db.querySelect(consulta, [idSegUsuario]);
         resp.status(201).json("Usuario eliminado correctamente");
